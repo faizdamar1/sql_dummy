@@ -61,6 +61,24 @@
 	WHERE rnk = 1
 
 -- 6. Which item was purchased first by the customer after they became a member?
+	WITH CTE AS (
+		SELECT
+			s.customer_id,
+			s.order_date,
+			s.product_id,
+			m.join_date,
+			me.product_name,
+		RANK() OVER(PARTITION BY s.customer_id ORDER BY order_date) as rnk,
+		ROW_NUMBER() OVER(PARTITION BY s.customer_id ORDER BY order_date) as rn
+		FROM 1_sales s 
+		INNER JOIN 1_members m ON s.customer_id = m.customer_id
+		INNER JOIN 1_menu me ON s.product_id = me.product_id
+		WHERE order_date >= join_date
+	)
+	SELECT *
+	FROM CTE
+	WHERE rnk = 1
+
 -- 7. Which item was purchased just before the customer became a member?
 -- 8. What is the total items and amount spent for each member before they became a member?
 -- 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier 1. how many points would each customer have?
