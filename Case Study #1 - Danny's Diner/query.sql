@@ -100,5 +100,15 @@
 	WHERE rnk = 1 
 
 -- 8. What is the total items and amount spent for each member before they became a member?
+	SELECT
+		s.customer_id,
+		COUNT(me.product_name) total_items,
+		SUM(me.price) amount_spent
+	FROM 1_sales s 
+	INNER JOIN 1_members m ON s.customer_id = m.customer_id
+	INNER JOIN 1_menu me ON s.product_id = me.product_id
+	WHERE order_date >= join_date
+	GROUP BY s.customer_id
+
 -- 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier 1. how many points would each customer have?
 -- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
