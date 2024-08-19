@@ -159,3 +159,4 @@
 	WHERE DATE_FORMAT(s.order_date, '%Y-%m-01') = '2021-01-01'
 	GROUP BY s.customer_id 
 	
+	-- done
