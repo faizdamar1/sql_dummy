@@ -8,7 +8,23 @@
     FROM 2_customer_orders co
     
 -- 3. How many successful orders were delivered by each runner?
+    SELECT
+    ro.runner_id, COUNT(DISTINCT ro.runner_id) delivery_order
+    FROM 2_customer_orders co
+    INNER JOIN 2_runner_orders ro ON co.order_id = ro.order_id
+    WHERE pickup_time <> 'null'
+    GROUP BY ro.runner_id
+
 -- 4. How many of each type of pizza was delivered?
+    SELECT
+    pn.pizza_name, 
+    COUNT(pn.pizza_id) pizza_delivered
+    FROM 2_customer_orders co
+    INNER JOIN 2_runner_orders ro ON co.order_id = ro.order_id
+    INNER JOIN 2_pizza_names pn ON co.pizza_id = pn.pizza_id
+    WHERE pickup_time <> 'null'
+    GROUP BY pn.pizza_name
+
 -- 5. How many Vegetarian and Meatlovers were ordered by each customer?
 -- 6. What was the maximum number of pizzas delivered in a single order?
 -- 6. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
