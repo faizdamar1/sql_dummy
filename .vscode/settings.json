@@ -14,5 +14,6 @@
             "username": "root",
             "password": ""
         }
-    ]
+    ],
+    "cody.autocomplete.advanced.provider": "experimental-ollama"
 }

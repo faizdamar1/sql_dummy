@@ -26,6 +26,14 @@
     GROUP BY pn.pizza_name
 
 -- 5. How many Vegetarian and Meatlovers were ordered by each customer?
+    SELECT
+    co.customer_id,
+    pn.pizza_name, 
+    COUNT(pn.pizza_id) pizza_ordered
+    FROM 2_customer_orders co
+    INNER JOIN 2_pizza_names pn ON co.pizza_id = pn.pizza_id
+    GROUP BY pn.pizza_name, co.customer_id
+    
 -- 6. What was the maximum number of pizzas delivered in a single order?
 -- 6. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
 -- 7. How many pizzas were delivered that had both exclusions and extras?
