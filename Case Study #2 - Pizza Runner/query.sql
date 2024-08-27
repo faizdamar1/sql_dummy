@@ -45,7 +45,36 @@
     GROUP BY co.order_id, pickup_time
     ORDER BY maximum_order DESC
     LIMIT 1
--- 6. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
--- 7. How many pizzas were delivered that had both exclusions and extras?
--- 8. What was the total volume of pizzas ordered for each hour of the day?
--- 9. What was the volume of orders for each day of the week?
+
+-- 7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+    WITH CTE AS (
+        SELECT 
+        co.customer_id,
+        SUM(CASE 
+            WHEN (
+                (co.exclusions IS NOT NULL AND co.exclusions <> 'null' AND LENGTH(co.exclusions) > 0) 
+        OR (co.extras IS NOT NULL AND co.extras <> 'null' AND LENGTH(co.extras) > 0)
+            ) = TRUE
+            THEN 1
+            ELSE 0
+        END) as changes,
+        SUM(CASE 
+            WHEN (
+                (co.exclusions IS NOT NULL AND co.exclusions <> 'null' AND LENGTH(co.exclusions) > 0) 
+        OR (co.extras IS NOT NULL AND co.extras <> 'null' AND LENGTH(co.extras) > 0)
+            ) = TRUE
+            THEN 0
+            ELSE 1
+        END) as no_changes
+        FROM 2_customer_orders co
+        INNER JOIN 2_runner_orders ro ON ro.order_id = co.order_id
+        WHERE ro.pickup_time != 'null'
+        GROUP BY co.customer_id
+    )
+    SELECT
+    *
+    FROM CTE c
+    WHERE c.changes > 0 
+-- 8. How many pizzas were delivered that had both exclusions and extras?
+-- 9. What was the total volume of pizzas ordered for each hour of the day?
+-- 10. What was the volume of orders for each day of the week?
