@@ -35,6 +35,16 @@
     GROUP BY pn.pizza_name, co.customer_id
     
 -- 6. What was the maximum number of pizzas delivered in a single order?
+    SELECT
+    co.order_id,
+    pickup_time,
+    COUNT(co.order_id) maximum_order
+    FROM 2_customer_orders co
+    INNER JOIN 2_runner_orders ro ON ro.order_id = co.order_id
+    WHERE ro.pickup_time != 'null' 
+    GROUP BY co.order_id, pickup_time
+    ORDER BY maximum_order DESC
+    LIMIT 1
 -- 6. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
 -- 7. How many pizzas were delivered that had both exclusions and extras?
 -- 8. What was the total volume of pizzas ordered for each hour of the day?
