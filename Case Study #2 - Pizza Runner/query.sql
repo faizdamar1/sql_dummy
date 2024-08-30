@@ -1,11 +1,11 @@
 -- ### A. Pizza Metrics
 -- 1. How many pizzas were ordered?
-    SELECT count(*)
-    FROM 2_customer_orders 
+   SELECT count(*)
+   FROM 2_customer_orders 
 
 -- 2. How many unique customer orders were made?
-    SELECT COUNT(DISTINCT(co.order_id)) unique_customer_order
-    FROM 2_customer_orders co
+   SELECT COUNT(DISTINCT(co.order_id)) unique_customer_order
+   FROM 2_customer_orders co
     
 -- 3. How many successful orders were delivered by each runner?
     SELECT
@@ -75,6 +75,15 @@
     *
     FROM CTE c
     WHERE c.changes > 0 
+    
 -- 8. How many pizzas were delivered that had both exclusions and extras?
+    SELECT
+    COUNT(co.pizza_id) pizza_delivered_with_extras_and_exclusion
+    FROM 2_customer_orders co
+    INNER JOIN 2_runner_orders ro ON ro.order_id = co.order_id
+    WHERE ro.pickup_time != 'null' 
+    AND (co.exclusions IS NOT NULL AND co.exclusions <> 'null' AND LENGTH(co.exclusions) > 0)
+    AND (co.extras IS NOT NULL AND co.extras <> 'null' AND LENGTH(co.extras) > 0)
+    
 -- 9. What was the total volume of pizzas ordered for each hour of the day?
 -- 10. What was the volume of orders for each day of the week?
