@@ -93,3 +93,8 @@
     GROUP BY HOUR(co.order_time)
 
 -- 10. What was the volume of orders for each day of the week?
+    SELECT 
+    DAYNAME(co.order_time) as day_name,
+    COUNT(co.pizza_id) as ordered_pizza
+    FROM 2_customer_orders co
+    GROUP BY day_name
