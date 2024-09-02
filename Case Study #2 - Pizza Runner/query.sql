@@ -84,6 +84,12 @@
     WHERE ro.pickup_time != 'null' 
     AND (co.exclusions IS NOT NULL AND co.exclusions <> 'null' AND LENGTH(co.exclusions) > 0)
     AND (co.extras IS NOT NULL AND co.extras <> 'null' AND LENGTH(co.extras) > 0)
-    
+
 -- 9. What was the total volume of pizzas ordered for each hour of the day?
+    SELECT 
+    HOUR(co.order_time) as hour,
+    COUNT(co.pizza_id) as ordered_pizza
+    FROM 2_customer_orders co
+    GROUP BY HOUR(co.order_time)
+
 -- 10. What was the volume of orders for each day of the week?
